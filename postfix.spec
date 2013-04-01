@@ -35,7 +35,7 @@
 Name: postfix
 Summary: Postfix Mail Transport Agent
 Version: 2.6.6
-Release: 2%{?dist}
+Release: 2.1%{?dist}
 Epoch: 2
 Group: System Environment/Daemons
 URL: http://www.postfix.org
@@ -74,6 +74,7 @@ Patch2: postfix-2.6.1-files.patch
 Patch3: postfix-alternatives.patch
 Patch8: postfix-large-fs.patch
 Patch9: pflogsumm-1.1.1-datecalc.patch
+Patch10: postfix-2.6.6-CVE-2011-0411.patch
 
 # Optional patches - set the appropriate environment variables to include
 #                    them when building the package/spec file
@@ -161,7 +162,7 @@ pushd pflogsumm-%{pflogsumm_ver}
 %patch9 -p1 -b .datecalc
 popd
 %endif
-
+%patch10 -p1 -b .CVE-2011-0411
 for f in README_FILES/TLS_{LEGACY_,}README; do
 	iconv -f iso8859-1 -t utf8 -o ${f}{_,} &&
 		touch -r ${f}{,_} && mv -f ${f}{_,}
@@ -489,6 +490,9 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %changelog
+* Wed Mar 09 2011 Jaroslav Škarvada <jskarvad@redhat.com> - 2:2.6.6-2.1
+- fix CVE-2011-0411 (#682978)
+
 * Wed May 26 2010 Miroslav Lichvar <mlichvar@redhat.com> 2:2.6.6-2
 - compile with -fno-strict-aliasing (#594307)
 
